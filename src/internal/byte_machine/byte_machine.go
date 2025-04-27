@@ -86,6 +86,12 @@ func (bm *ByteMachine) Pop() int {
 	return val
 }
 
+func (bm *ByteMachine) Peek() int {
+	// Get top value
+	val := bm.Stack[len(bm.Stack)-1]
+	return val
+}
+
 func (bm *ByteMachine) GetRegisters() [8]int {
 	return bm.Registers
 }

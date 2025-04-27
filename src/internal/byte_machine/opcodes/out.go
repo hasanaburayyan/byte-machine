@@ -11,5 +11,5 @@ type Out struct{}
 var _ OpCode = (*Push)(nil)
 
 func (op *Out) Apply(m machine.Machine) {
-	fmt.Printf("%v\n", m.Pop())
+	fmt.Printf("%v\n", m.Peek())
 }

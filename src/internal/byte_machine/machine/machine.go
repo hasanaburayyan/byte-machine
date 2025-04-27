@@ -8,6 +8,7 @@ type Machine interface {
 	SetIP(ip int)
 	GetStack() []int
 	Push(val int)
+	Peek() int
 	Pop() int
 	GetRegisters() [8]int
 	SetRegister(reg int, val int)

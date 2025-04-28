@@ -52,3 +52,27 @@ src/
         tests/            # Unit tests for each opcode
     utils/                # Utility helpers (parsing, etc.)
 program.bin                # Example compiled program
+
+
+## 🚀 Install
+
+```bash
+go install github.com/hasanaburayyan/byte-machine/src/cmd/byte_machine@latest
+```
+
+Best paired with bytewrite!!
+
+```bash
+go install github.com/hasanaburayyan/bytewrite/src/cmd/bytewrite@latest
+```
+
+## Example Print 1-10
+```bash
+bytewrite -b 00010000 00000001 00010011 00000001 00010100 00000001 00010000 00001010 00100100 00010111 00010110 00010100 00000001 00000001 00010000 00000001 00110000 00010011 00000001 00010101 00000100 11111111 | byte_machine
+```
+
+Print 1-100
+```bash
+bytewrite -b 00010000 00000001 00010011 00000001 00010100 00000001 00010000 01100100 00100100 00010111 00010110 00010100 00000001 00000001 00010000 00000001 00110000 00010011 00000001 00010101 00000100 11111111 | byte_machine
+```
+

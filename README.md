@@ -60,7 +60,7 @@ program.bin                # Example compiled program
 go install github.com/hasanaburayyan/byte-machine/src/cmd/byte_machine@latest
 ```
 
-Best paired with bytewrite!!
+Best paired with [bytewrite](https://github.com/hasanaburayyan/bytewrite)!!
 
 ```bash
 go install github.com/hasanaburayyan/bytewrite/src/cmd/bytewrite@latest

@@ -52,7 +52,7 @@ src/
         tests/            # Unit tests for each opcode
     utils/                # Utility helpers (parsing, etc.)
 program.bin                # Example compiled program
-
+```
 
 ## 🚀 Install
 

@@ -2,21 +2,26 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 
 	bytemachine "github.com/hasanaburayyan/byte-machine/src/internal/byte_machine"
 )
 
 func main() {
-	// Read program.bin
-	program, err := os.ReadFile("program.bin")
+	stat, _ := os.Stdin.Stat()
+	if (stat.Mode() & os.ModeCharDevice) != 0 {
+		fmt.Println("No input detected. Exiting.")
+		return
+	}
+
+	input, err := io.ReadAll(os.Stdin)
 	if err != nil {
-		fmt.Printf("Failed to read program.bin: %v\n", err)
-		os.Exit(1)
+		panic("failed to read input from stdin")
 	}
 
 	// Create a new ByteMachine
-	machine := bytemachine.NewByteMachine(program)
+	machine := bytemachine.NewByteMachine(input)
 
 	// Run the machine
 	machine.Run()

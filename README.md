@@ -41,7 +41,7 @@ Inspired by projects like "Nand to Tetris," ByteMachine helps students and engin
 src/
   cmd/byte_machine/       # CLI entry point (runs compiled .bin programs)
   cmd/debugger/           # Optional debugger (WIP)
-  cmd/assembler/          # Assembler CLI for .bm source
+  cmd/bmasm/              # CLI assembler for .bm source
   internal/
     byte_machine/         # Core VM: memory, stack, IP, execution
       machine/            # Machine abstraction
@@ -60,11 +60,36 @@ program.bin                # Example compiled program
 go install github.com/hasanaburayyan/byte-machine/src/cmd/byte_machine@latest
 ```
 
-Best paired with [bytewrite](https://github.com/hasanaburayyan/bytewrite)!!
+### ByteWrite (helper tool for raw byte input)
 
 ```bash
 go install github.com/hasanaburayyan/bytewrite/src/cmd/bytewrite@latest
 ```
+
+### ByteMachine Assembler (`bmasm`)
+
+Install the official assembler CLI tool:
+
+```bash
+go install github.com/hasanaburayyan/byte-machine/src/cmd/bmasm@latest
+```
+
+### Assembler Usage
+
+To assemble a `.bm` file into a `.bin` file:
+
+```bash
+bmasm -i print10.bm -o print10.bin
+```
+
+To run the file directly without saving a `.bin`:
+
+```bash
+bmasm -i print10.bm --run
+```
+
+- If `--run` is used, `--out` is not required.
+- If `--run` is not used, `--out` is required.
 
 ## 🖊️ Writing Programs in Assembly
 
@@ -97,23 +122,22 @@ HALT
 
 ## 🧪 Running Programs
 
-### Option 1: Run a `.bm` file directly
+### Option 1: Run a `.bm` file directly with the assembler
 
 ```bash
-go run cmd/assembler/main.go print10.bm --run
+bmasm -i print10.bm --run
 ```
 
 ### Option 2: Compile `.bm` to `.bin`
 
 ```bash
-go run cmd/assembler/main.go print10.bm
-# Creates print10.bin
+bmasm -i print10.bm -o print10.bin
 ```
 
-### Option 3: Run a `.bin` file
+### Option 3: Run a `.bin` file with the VM
 
 ```bash
-go run cmd/byte_machine/main.go print10.bin
+byte_machine print10.bin
 ```
 
 ## ⚙️ Byte-Level Examples (Raw Byte Execution)

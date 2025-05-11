@@ -1,0 +1,19 @@
+package main
+
+import (
+	bytemachine "github.com/hasanaburayyan/byte-machine/src/internal/byte_machine"
+	"github.com/hasanaburayyan/byte-machine/src/internal/debugger"
+)
+
+func main() {
+	program := []byte{
+		0x10, 0x01, 0x13, 0x01, 0x14, 0x01, 0x10, 0x0a, 0x24, 0x17, 0x16, 0x14, 0x01, 0x01, 0x10, 0x01,
+		0x30, 0x13, 0x01, 0x15, 0x04, 0xff,
+	}
+
+	m := bytemachine.NewByteMachine(program)
+
+	d := debugger.NewDebugger(m)
+
+	d.Run()
+}

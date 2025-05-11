@@ -1,0 +1,28 @@
+# This program prints the numbers
+# 1 through 10
+
+# Fist take the number 1 and store it in a register labeled 1
+PUSH 1
+STORE 1
+
+start_check:
+LOAD 1
+# now lets compare what was in register 1 to the number 10
+
+PUSH 10
+GREATER
+
+# If it was true that register 1 was larger than 10 then we jump to the end
+JUMP_IF_NOT_ZERO end
+
+# otherwise lets load that value back in, print it 
+# and add 1 to it
+LOAD 1
+OUT
+PUSH 1
+ADD
+STORE 1
+JUMP start_check
+
+end:
+HALT

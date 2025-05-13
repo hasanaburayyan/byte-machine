@@ -1,0 +1,24 @@
+{
+  "scopeName": "source.bytemachine",
+  "name": "ByteMachine",
+  "patterns": [
+    {
+      "name": "keyword.control.bytemachine",
+      "match": "\\b(PUSH|POP|LOAD|STORE|ADD|SUB|MUL|DIV|MOD|POW|JUMP|JUMP_IF_ZERO|JUMP_IF_NOT_ZERO|HALT|OUT|GREATER|LESS|EQ|NE|PEEK)\\b"
+    },
+    {
+      "name": "comment.line.number-sign.bytemachine",
+      "match": "#.*$"
+    },
+    {
+      "name": "constant.numeric.bytemachine",
+      "match": "\\b\\d+\\b"
+    },
+    {
+      "name": "entity.name.label.bytemachine",
+      "match": "^[a-zA-Z_][\\w]*:"
+    }
+  ],
+  "repository": {},
+  "scope": "source.bytemachine"
+}

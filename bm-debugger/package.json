@@ -1,0 +1,76 @@
+{
+  "name": "bm-debugger",
+  "version": "0.0.1",
+  "main": "dist/extension.js",
+  "activationEvents": [
+    "onDebug"
+  ],
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Debuggers"
+  ],
+  "contributes": {
+    "grammars": [
+      {
+        "language": "bytemachine",
+        "scopeName": "source.bytemachine",
+        "path": "./syntaxes/bytemachine.tmLanguage.json"
+      }
+    ],
+    "breakpoints": [
+      {
+        "language": "bytemachine"
+      }
+    ],
+    "languages": [
+      {
+        "id": "bytemachine",
+        "aliases": [
+          "ByteMachine",
+          "bm"
+        ],
+        "extensions": [
+          ".bm"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "bytemachine",
+        "label": "ByteMachine Debugger",
+        "program": "./dist/adapter.js",
+        "languages": [
+          "bytemachine"
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program"
+            ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Path to the .bin program"
+              },
+              "sourcemap": {
+                "type": "string",
+                "description": "Path to .bmsmap.json sourcemap"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "build": "tsc -p ."
+  },
+  "devDependencies": {
+    "vscode": "^1.1.37",
+    "vscode-debugadapter": "^1.51.0",
+    "vscode-debugprotocol": "^1.51.0"
+  }
+}

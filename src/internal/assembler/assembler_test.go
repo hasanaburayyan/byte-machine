@@ -10,8 +10,7 @@ import (
 func TestAssembleValidProgram(t *testing.T) {
 
 	t.Run("Simple add program", func(t *testing.T) {
-		src := `
-		PUSH 5
+		src := `PUSH 5
 		PUSH 10
 		ADD
 		OUT
@@ -19,7 +18,7 @@ func TestAssembleValidProgram(t *testing.T) {
 	`
 
 		// Assemble source
-		output, err := Assemble(strings.NewReader(src))
+		output, sourceMap, err := Assemble(strings.NewReader(src))
 		if err != nil {
 			t.Fatalf("assemble failed: %v", err)
 		}
@@ -34,12 +33,19 @@ func TestAssembleValidProgram(t *testing.T) {
 		}
 
 		require.Equal(t, expected, output)
+		require.Equal(t, 7, len(sourceMap.ByteToLine))
+		require.Equal(t, 5, len(sourceMap.LineToByte)) // each instruction on its own line
+		require.Equal(t, 1, sourceMap.ByteToLine[0])   // PUSH 5 opcode
+		require.Equal(t, 1, sourceMap.ByteToLine[1])   // PUSH 5 arg
+		require.Equal(t, 2, sourceMap.ByteToLine[2])   // PUSH 10 opcode
+		require.Equal(t, 2, sourceMap.ByteToLine[3])   // PUSH 10 arg
+		require.Equal(t, 3, sourceMap.ByteToLine[4])   // ADD
 	})
 
 	t.Run("bad opcode", func(t *testing.T) {
 		src := `FROBNICATE`
 
-		_, err := Assemble(strings.NewReader(src))
+		_, _, err := Assemble(strings.NewReader(src))
 
 		require.Error(t, err)
 	})
@@ -47,7 +53,7 @@ func TestAssembleValidProgram(t *testing.T) {
 	t.Run("not enough arg count", func(t *testing.T) {
 		src := `PUSH`
 
-		_, err := Assemble(strings.NewReader(src))
+		_, _, err := Assemble(strings.NewReader(src))
 
 		require.Error(t, err)
 	})
@@ -55,7 +61,7 @@ func TestAssembleValidProgram(t *testing.T) {
 	t.Run("too many enough arg count", func(t *testing.T) {
 		src := `PUSH 10 11`
 
-		_, err := Assemble(strings.NewReader(src))
+		_, _, err := Assemble(strings.NewReader(src))
 
 		require.Error(t, err)
 	})
@@ -96,9 +102,11 @@ func TestAssembleValidProgram(t *testing.T) {
 			0x04, 0xff,
 		}
 
-		output, err := Assemble(strings.NewReader(src))
+		output, sourceMap, err := Assemble(strings.NewReader(src))
 
 		require.NoError(t, err)
 		require.Equal(t, expected, output)
+		require.Equal(t, 22, len(sourceMap.ByteToLine))
+		require.Equal(t, 13, len(sourceMap.LineToByte))
 	})
 }

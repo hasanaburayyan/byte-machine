@@ -2,9 +2,11 @@ package cmds
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/hasanaburayyan/byte-machine/src/internal/assembler"
@@ -15,6 +17,7 @@ import (
 var outputFileName string
 var inputFileName string
 var run bool
+var outSourceMap bool
 
 var rootCmd = &cobra.Command{
 	Use:   "bmasm",
@@ -47,7 +50,7 @@ var rootCmd = &cobra.Command{
 			r = bufio.NewReader(file)
 		}
 
-		res, err := assembler.Assemble(r)
+		res, sourcemap, err := assembler.Assemble(r)
 		if err != nil {
 			fmt.Printf("assembly error: %v\n", err)
 			os.Exit(1)
@@ -71,13 +74,38 @@ var rootCmd = &cobra.Command{
 			fmt.Printf("error writing bytes to file: %v\n", err)
 			os.Exit(1)
 		}
+
+		if outSourceMap {
+			f, err := os.Create(replaceExtension(outputFileName, ".bmsmap.json"))
+			if err != nil {
+				fmt.Printf("error creating output file: %v\n", err)
+				os.Exit(1)
+			}
+			defer f.Close()
+
+			d, err := json.Marshal(sourcemap)
+			if err != nil {
+				fmt.Printf("marshal sourcemap: %v\n", err)
+				os.Exit(1)
+			}
+			_, err = f.Write(d)
+			if err != nil {
+				fmt.Printf("writing sourcemap: %v\n", err)
+				os.Exit(1)
+			}
+		}
 	},
+}
+
+func replaceExtension(filename, newExt string) string {
+	return filepath.Base(filename[:len(filename)-len(filepath.Ext(filename))]) + newExt
 }
 
 func Execute() {
 	rootCmd.PersistentFlags().StringVarP(&outputFileName, "out", "o", "", "The name of the output file for the binary")
 	rootCmd.PersistentFlags().StringVarP(&inputFileName, "in", "i", "", "The name of the input file containing assembly code")
 	rootCmd.PersistentFlags().BoolVarP(&run, "run", "r", false, "Skips writing binary to a file and just runs assembly code")
+	rootCmd.PersistentFlags().BoolVarP(&outSourceMap, "source-map", "s", false, "Print out source map")
 
 	rootCmd.Execute()
 }
